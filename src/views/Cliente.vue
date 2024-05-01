@@ -1,18 +1,85 @@
-<!DOCTYPE html>
+<template>
+  <ion-page>
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Registro de Cliente</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content :fullscreen="true" class="ion-padding">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" size-md="6" offset-md="3">
+            <ion-card>
+              <ion-card-content>
+                <DatosComunesComponent/>
+              </ion-card-content>
+            </ion-card>
+            <ion-button expand="block" @click="submitForm">Registrarse</ion-button>
+            <ion-toast :isOpen="showToast" message="Tu registro se ha completado exitosamente" duration="3000" onIonDidDismiss="showToast = false"></ion-toast>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-content>
+  </ion-page>
+</template>
 
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vista de Cliente</title>
-</head>
-<body>
-  <h1>Vista de Cliente</h1>
-  <div id="cliente-info">
-    <!-- Aquí se mostraría la información del cliente -->
-  </div>
-  <div id="cliente-orders">
-    <!-- Aquí se mostrarían las órdenes del cliente -->
-  </div>
-</body>
-</html>
+<script setup lang="ts">
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonItem, IonLabel, IonInput, IonSelect, IonSelectOption, IonButton, IonToast } from '@ionic/vue';
+import { ref } from 'vue';
+import DatosComunesComponent from '@/components/DatosComunesComponent.vue';
+const formData = ref({
+  firstName: '',
+  secondName: '',
+  firstLastName: '',
+  secondLastName: '',
+  documentType: '',
+  documentNumber: ''
+});
+
+const showToast = ref(false);
+
+const validateFirstName = (event: any) => {
+  const inputValue: string = event.target.value;
+  // Expresión regular que solo permite letras y espacios
+  const regex = /^[a-zA-Z\s]*$/;
+  if (!regex.test(inputValue)) {
+    // Si el valor no coincide con la expresión regular, eliminamos el último carácter ingresado
+    formData.value.firstName = inputValue.slice(0, -1);
+  }
+};
+
+const validateFirstLastName = (event: any) => {
+  const inputValue: string = event.target.value;
+  // Expresión regular que solo permite letras y espacios
+  const regex = /^[a-zA-Z\s]*$/;
+  if (!regex.test(inputValue)) {
+    // Si el valor no coincide con la expresión regular, eliminamos el último carácter ingresado
+    formData.value.firstLastName = inputValue.slice(0, -1);
+  }
+};
+
+const validateDocumentNumber = (event: any) => {
+  const inputValue: string = event.target.value;
+  // Expresión regular que solo permite números
+  const regex = /^[0-9]*$/;
+  if (!regex.test(inputValue)) {
+    // Si el valor no coincide con la expresión regular, eliminamos el último carácter ingresado
+    formData.value.documentNumber = inputValue.slice(0, -1);
+  }
+};
+
+const submitForm = () => {
+  // Aquí puedes enviar los datos a través de una solicitud HTTP o realizar cualquier otra acción necesaria
+  console.log(formData.value);
+  // Mostrar la notificación
+  showToast.value = true;
+};
+</script>
+
+<style scoped>
+ion-card {
+  margin-top: 20px;
+}
+</style>
+
+
